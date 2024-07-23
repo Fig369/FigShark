@@ -25,3 +25,4 @@ yarn-error.log*
 frontend/.gitignore
 frontend/.env
 frontend/node_modules
+.env
