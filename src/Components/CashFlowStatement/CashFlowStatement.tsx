@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { CompanyCashFlow } from '../../company';
 import { useOutletContext } from 'react-router-dom';
-import { getCashflowStatement } from '../../api';
+import { getCashFlow } from '../../api';
 import Table from '../Table/Table';
 import Spinner from '../Spinner/Spinner';
 type Props = {}
@@ -48,7 +48,7 @@ const CashflowStatement = (props: Props) => {
     const [cashFlowData, setCashFlow] = useState<CompanyCashFlow[]>();
     useEffect(() => {
         const fetchCashflow = async () => {
-            const result = await getCashflowStatement(ticker!);
+            const result = await getCashFlow(ticker!);
             setCashFlow(result!.data);
         };
         fetchCashflow();

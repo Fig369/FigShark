@@ -1,11 +1,12 @@
-import React, { ChangeEvent, SyntheticEvent, useState } from 'react'
+import React, { ChangeEvent, SyntheticEvent, useState, useEffect, useCallback } from 'react';
 import { CompanySearch } from '../../company';
 import { searchCompanies } from '../../api';
 import Search from '../../Components/Search/Search';
 import ListPortfolio from '../../Components/Portfolio/ListPortfolio/ListPortfolio';
 import CardList from '../../Components/CardList/CardList';
+import debounce from 'lodash.debounce';
 
-interface Props { }
+interface Props {}
 
 const SearchPage = (props: Props) => {
     const [search, setSearch] = useState<string>("");
@@ -15,8 +16,7 @@ const SearchPage = (props: Props) => {
 
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
-        console.log(e);
-    }
+    };
 
     const onPortfolioCreate = (e: any) => {
         e.preventDefault();
@@ -27,18 +27,16 @@ const SearchPage = (props: Props) => {
         }
         const updatedPortfolio = [...portfolioValues, e.target[0].value];
         setPortfolioValues(updatedPortfolio);
-    }
+    };
 
     const onPortfolioDelete = (e: any) => {
         e.preventDefault();
         const removed = portfolioValues.filter((value) => value !== e.target[0].value);
         setPortfolioValues(removed);
-    }
+    };
 
-    const onSearchSubmit = async (e: SyntheticEvent) => {
-        e.preventDefault();
-        const result = await searchCompanies(search);
-        // setServerError(result.data);
+    const performSearch = async (query: string) => {
+        const result = await searchCompanies(query);
         if (typeof result === 'string') {
             setServerError(result);
         } else if (Array.isArray(result.data)) {
@@ -46,6 +44,20 @@ const SearchPage = (props: Props) => {
         }
         console.log(searchResult);
     };
+
+    const debouncedSearch = useCallback(debounce((query: string) => performSearch(query), 300), []);
+
+    useEffect(() => {
+        if (search) {
+            debouncedSearch(search);
+        }
+    }, [search, debouncedSearch]);
+
+    const onSearchSubmit = (e: SyntheticEvent) => {
+        e.preventDefault();
+        debouncedSearch(search);
+    };
+
     return (
         <div className="App">
             <Search
@@ -60,7 +72,7 @@ const SearchPage = (props: Props) => {
             />
             {serverError && <h1>{serverError}</h1>}
         </div>
-    )
-}
+    );
+};
 
-export default SearchPage
+export default SearchPage;

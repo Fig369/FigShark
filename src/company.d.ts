@@ -6,6 +6,11 @@ export interface CompanySearch {
     symbol: string;
 }
 
+export interface CompanyCompData {
+  symbol: string;
+  peersList: string[];
+}
+
 export interface CompanyProfile {
     symbol: string;
     price: number;
@@ -548,4 +553,14 @@ export interface CompanyCashFlow {
     capexPerShareTTM: number;
     dividendPerShareTTM: number;
     debtToMarketCapTTM: number;
+  }
+
+  export interface CompanyTenK {
+    symbol: string;
+    fillingDate: string;
+    acceptedDate: string;
+    cik: string;
+    type: string;
+    link: string;
+    finalLink: string;
   }

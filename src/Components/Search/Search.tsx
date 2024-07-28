@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useState, SyntheticEvent } from 'react'
-import './Search.css'
+import React, { ChangeEvent, SyntheticEvent } from 'react';
+import './Search.css';
 
 type Props = {
     onSearchSubmit: (e: SyntheticEvent) => void;
-    search: string | undefined;
+    search: string;
     handleSearchChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -25,11 +25,11 @@ const Search: React.FC<Props> = ({
                         placeholder="Search companies"
                         value={search}
                         onChange={handleSearchChange}
-                    ></input>
+                    />
                 </form>
             </div>
         </section>
     );
-}
+};
 
-export default Search
+export default Search;
